@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import CSVFile from '../components/CSVFile/CSVFile';
-import {CSVDownload} from 'react-csv';
+import {CSVDownload, CSVLink} from 'react-csv';
 import classes from './CSVRead.module.css';
 
 class CSVRead extends Component {
@@ -11,7 +11,8 @@ class CSVRead extends Component {
     suppliersB: [],
     barcodesA: [],
     barcodesB: [],
-    error: 0
+    error: 0,
+    csvData: []
   }
 
   fileHandler=(file, data)=>{
@@ -183,6 +184,12 @@ class CSVRead extends Component {
     })
     let headers=[{"SKU": "SKU", "Description": "Description", "Source": "Source"}];
     console.log([...headers, ...changedA, ...changedB]);
+    let final = [...changedA, ...changedB]
+    this.setState({
+      csvData: final
+    })
+
+    
 
     // /CSVDownload
   }
@@ -196,6 +203,7 @@ class CSVRead extends Component {
         <CSVFile fileHandler={this.fileHandler} />
         <CSVFile fileHandler={this.fileHandler} />
         <button onClick={this.generateOutput}>Generate Output</button>
+        <CSVLink data={this.state.csvData}  filename={'result_output.csv'}target="/catalog-bunnings/src/output">Download me</CSVLink>;
       </div>
       
     )
