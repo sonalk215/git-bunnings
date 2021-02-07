@@ -166,7 +166,6 @@ class CSVRead extends Component {
         "SKU": tempSKU,
         "Description": e.Description,
         "Source": e.Source,
-        
       }
     })
 
@@ -182,8 +181,8 @@ class CSVRead extends Component {
         "Source": e.Source
       }
     })
-    let headers=[{"SKU": "SKU", "Description": "Description", "Source": "Source"}];
-    console.log([...headers, ...changedA, ...changedB]);
+    // let headers=[{"SKU": "SKU", "Description": "Description", "Source": "Source"}];
+    // console.log([...headers, ...changedA, ...changedB]);
     let final = [...changedA, ...changedB]
     this.setState({
       csvData: final

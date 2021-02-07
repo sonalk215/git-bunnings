@@ -1,0 +1,12 @@
+.Header__header {
+    padding: 5px 20px;
+    color: white;
+    background-color: #e23e3e;
+}
+  
+.Header_h1, .Header_p {
+    margin: 0;
+    line-height: 160%;
+    letter-spacing: 2px;
+    text-align: center;
+}
