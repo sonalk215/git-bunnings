@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import CSVFile from '../components/CSVFile/CSVFile';
 import {CSVDownload, CSVLink} from 'react-csv';
+import {SKU_Description_Pair} from '../helperFunctions';
 import classes from './CSVRead.module.css';
 
 class CSVRead extends Component {
@@ -37,48 +38,64 @@ class CSVRead extends Component {
   }
 
   generateOutput=()=>{
+    let {barcodesA, barcodesB, catalogA, catalogB} = this.state;
     let resultArr=[]
-    let {barcodesA, barcodesB, catalogA, catalogB} = this.state
-    let tempA={}, tempB={};
-    let tempCatA={}, tempCatB={};
     
-
-    for(let i=1; i < catalogA.length ;i++) {
-      let mid=catalogA[i].data;
-      tempCatA[mid[0]] = mid[1]
-    }
-    for(let i=1; i < catalogB.length ;i++) {
-      let mid=catalogB[i].data;
-      tempCatB[mid[0]] = mid[1]
-    }
+    let tempA={}, tempB={}, tempArr=[];
+    // let tempCatB={};
+    let codeAndSKU_A=[], codeAndSKU_B=[];
+    
+    // for(let i=1; i < catalogA.length ;i++) {
+    //   let mid=catalogA[i].data;
+    //   tempCatA[mid[0]] = mid[1]
+    // }
+    
+    console.log(tempCatA);
+    // for(let i=1; i < catalogB.length ;i++) {
+    //   let mid=catalogB[i].data;
+    //   tempCatB[mid[0]] = mid[1]
+    // }
     // if(barcodesA.length>1 && barcodesB.length>1) {
 
+    let tempCatA=SKU_Description_Pair(catalogA);
+    let tempCatB=SKU_Description_Pair(catalogB);
 
-      for (let i=1; i < barcodesA.length ; i++) {
-        let data = barcodesA[i].data;
+    for (let i=1; i < barcodesA.length ; i++) {
+      let data = barcodesA[i].data;
+      
+      codeAndSKU_A.push({
+        "code": data[2],
+        "sku": data[1]
+      })
 
-        if(tempCatA[data[1]]) {
-          if(tempA[tempCatA[data[1]]]) {
-            tempA[tempCatA[data[1]]] = tempA[tempCatA[data[1]]] + "," + data[2]
-          }
-          else {
-            tempA[tempCatA[data[1]]] = data[2]
-          }
+      if(tempCatA[data[1]]) {
+        if(tempA[tempCatA[data[1]]]) {
+          tempA[tempCatA[data[1]]] = tempA[tempCatA[data[1]]] + "," + data[2]
+        }
+        else {
+          tempA[tempCatA[data[1]]] = data[2]
         }
       }
+    }
+    // console.log(tempA);
 
-      for (let i=1; i < barcodesB.length ; i++) {
-        let data= barcodesB[i].data;
+    for (let i=1; i < barcodesB.length ; i++) {
+      let data= barcodesB[i].data;      
+      codeAndSKU_B.push({
+        "code": data[2],
+        "sku": data[1]
+      })
 
-        if(tempCatB[data[1]]) {
-          if(tempB[tempCatB[data[1]]]) {
-            tempB[tempCatB[data[1]]] = tempB[tempCatB[data[1]]] + "," + data[2]
-          }
-          else {
-            tempB[tempCatB[data[1]]] = data[2]
-          }
+      if(tempCatB[data[1]]) {
+        if(tempB[tempCatB[data[1]]]) {
+          tempB[tempCatB[data[1]]] = tempB[tempCatB[data[1]]] + "," + data[2]
+        }
+        else {
+          tempB[tempCatB[data[1]]] = data[2]
         }
       }
+    }
+    // console.log(tempCatB);
     // }
     // else {
     //   console.log("barcode files not selected, hence there hould be error");
@@ -87,110 +104,67 @@ class CSVRead extends Component {
     let sortedTempA= Object.keys(tempA).sort().reduce((r,k)=> (r[k] = tempA[k], r), {});
     let sortedTempB= Object.keys(tempB).sort().reduce((r,k)=> (r[k] = tempB[k], r), {});
 
-    let objAKeys=Object.keys(sortedTempA);
-    let objBKeys=Object.keys(sortedTempB);
+    let allBarcodesAString='', allBarcodesBString='', allBarcodesAArr=[], allBarcodesBArr=[];
 
-    for(let i=0; i<objAKeys.length;i++) {
-      // for(let i=0; i<1;i++) {
-      if(objBKeys.indexOf(objAKeys[i])!==-1) {
-        let txt=objAKeys[i];
-        let codesA=sortedTempA[txt];
-        let codesB=sortedTempB[txt];
-
-        let codeArrA=codesA.split(",");
-        let codeArrB=codesB.split(",");
-
-        for(let i=0; i< codeArrA.length ;i++) {
-          if(codeArrB.indexOf(codeArrA[i])!==-1) {
-            resultArr.push({
-              "SKU": '',
-              "Description": txt,
-              "Source": 'A',
-            })
-            break;
-          }
-          else {
-            resultArr.push({
-              "SKU": '',
-              "Description": txt,
-              "Source": 'A'
-            })
-
-            resultArr.push({
-              "SKU": '',
-              "Description": txt,
-              "Source": 'B'
-            })
-            break;
-          }
-        }
-      }
-      else {
-        resultArr.push({
-          "SKU": '',
-          "Description": objAKeys[i],
-          "Source": 'A'
-        })
-      }
+    for(let i=0;i<Object.values(sortedTempA).length;i++) {
+      allBarcodesAString = allBarcodesAString + Object.values(sortedTempA)[i] + ',';
+    }
+    for(let i=0;i<Object.values(sortedTempB).length;i++) {
+      allBarcodesBString = allBarcodesBString + Object.values(sortedTempB)[i] + ',';
     }
 
-    //GET ELEMENTS ONLY IN SOURCE B
-    // console.log(objBKeys);
-    let onlyBKeys=objBKeys.filter(e=>!objAKeys.includes(e));
-    // console.log(onlyBKeys);
+    allBarcodesAArr=allBarcodesAString.split(',');
+    allBarcodesBArr=allBarcodesBString.split(',');
+    allBarcodesAArr.pop();
+    allBarcodesBArr.pop();
 
-    for (let i=0 ; i<onlyBKeys.length ; i++) {
-      resultArr.push({
-        "SKU": '',
-        "Description": onlyBKeys[i],
-        "Source": 'B'
+    for(let i=0; i<allBarcodesAArr.length ; i++) {
+      let sku=codeAndSKU_A.find(x=>x.code===allBarcodesAArr[i]).sku;
+      tempArr.push({
+        "SKU": sku,
+        "Description": '',
+        "Source": 'A',
+        'barcode': allBarcodesAArr[i]
       })
     }
 
-    let changedA = [], changedB = [], sourceA=[], sourceB=[];
-    console.log(resultArr);
-    for (let i=0; i<resultArr.length ; i++) {
-      // if(resultArr[i].)
-      sourceA = resultArr.filter(e=>e.Source==='A');
-      sourceB = resultArr.filter(e=>e.Source==='B');
-    }  
-
-      // console.log(tempCatA);
-    let prodNamesA=Object.values(tempCatA);
-    let prodSKUA=Object.keys(tempCatA);
-
-    changedA = sourceA.map(e=>{
-      let idx= prodNamesA.indexOf(e.Description);
-      let tempSKU = prodSKUA[idx];
-      return {
-        "SKU": tempSKU,
-        "Description": e.Description,
-        "Source": e.Source,
+    for(let i=0; i<allBarcodesBArr.length ; i++) {
+      if(allBarcodesAArr.indexOf(allBarcodesBArr[i])===-1) {
+        let sku=codeAndSKU_B.find(x=>x.code===allBarcodesBArr[i]).sku;
+        tempArr.push({
+          "SKU": sku,
+          "Description": '',
+          "Source": 'B',
+          'barcode': allBarcodesBArr[i]
+        })
       }
+    }
+    
+    for (let i=0 ; i<tempArr.length; i++) {
+      let obj=resultArr.find(o=>o.SKU===tempArr[i].SKU);
+      if(!obj) {
+        resultArr.push(tempArr[i])
+      }
+    }
+
+    let sourceA = resultArr.filter(e=>e.Source==='A');
+    let namesA=sourceA.map(elm=>{
+      elm.Description=tempCatA[elm.SKU]
+      return elm
     })
 
-    let prodNamesB=Object.values(tempCatB);
-    let prodSKUB=Object.keys(tempCatB);
-
-    changedB = sourceB.map(e=>{
-      let idx= prodNamesB.indexOf(e.Description);
-      let tempSKU = prodSKUB[idx];
-      return {
-        "SKU": tempSKU,
-        "Description": e.Description,
-        "Source": e.Source
-      }
+    let sourceB = resultArr.filter(e=>e.Source==='B');
+    let namesB=sourceB.map(elm=>{
+      elm.Description=tempCatB[elm.SKU]
+      return elm
     })
-    // let headers=[{"SKU": "SKU", "Description": "Description", "Source": "Source"}];
-    // console.log([...headers, ...changedA, ...changedB]);
-    let final = [...changedA, ...changedB]
+
+    let final = [...namesA, ...namesB]
+    final.forEach(elm=>delete elm.barcode);
+    
     this.setState({
       csvData: final
-    })
-
-    
-
-    // /CSVDownload
+    })  
   }
   render() {
     return (
@@ -202,9 +176,8 @@ class CSVRead extends Component {
         <CSVFile fileHandler={this.fileHandler} />
         <CSVFile fileHandler={this.fileHandler} />
         <button onClick={this.generateOutput}>Generate Output</button>
-        <CSVLink data={this.state.csvData}  filename={'result_output.csv'}target="/catalog-bunnings/src/output">Download me</CSVLink>;
+        <CSVLink data={this.state.csvData}  filename={'result_output.csv'} target="/catalog-bunnings/src/output" onClick={this.test}>Download me</CSVLink>;
       </div>
-      
     )
   }
 }

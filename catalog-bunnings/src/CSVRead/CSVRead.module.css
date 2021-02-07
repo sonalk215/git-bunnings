@@ -9,7 +9,7 @@
     
         position: relative;
         margin: auto;
-        overflow: hidden;
+        overflow-y: true;
         width: 50%;
         /* height: 350px; */
         background: #F5F5F5;
