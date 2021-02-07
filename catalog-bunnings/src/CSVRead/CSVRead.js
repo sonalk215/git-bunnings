@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import CSVFile from '../components/CSVFile/CSVFile';
 import {CSVDownload, CSVLink} from 'react-csv';
-import {SKU_Description_Pair} from '../helperFunctions';
+import {SKU_Description_Pair, Code_SKU_Pair, Add_Description} from '../helperFunctions';
 import classes from './CSVRead.module.css';
 
 class CSVRead extends Component {
@@ -39,10 +39,9 @@ class CSVRead extends Component {
 
   generateOutput=()=>{
     let {barcodesA, barcodesB, catalogA, catalogB} = this.state;
-    let resultArr=[]
-    
+    let resultArr=[];
+    let allBarcodesAString='', allBarcodesBString='', allBarcodesAArr=[], allBarcodesBArr=[];
     let tempA={}, tempB={}, tempArr=[];
-    // let tempCatB={};
     let codeAndSKU_A=[], codeAndSKU_B=[];
     
     // for(let i=1; i < catalogA.length ;i++) {
@@ -50,7 +49,7 @@ class CSVRead extends Component {
     //   tempCatA[mid[0]] = mid[1]
     // }
     
-    console.log(tempCatA);
+    // console.log(tempCatA);
     // for(let i=1; i < catalogB.length ;i++) {
     //   let mid=catalogB[i].data;
     //   tempCatB[mid[0]] = mid[1]
@@ -62,11 +61,7 @@ class CSVRead extends Component {
 
     for (let i=1; i < barcodesA.length ; i++) {
       let data = barcodesA[i].data;
-      
-      codeAndSKU_A.push({
-        "code": data[2],
-        "sku": data[1]
-      })
+      codeAndSKU_A.push(Code_SKU_Pair(barcodesA[i].data));
 
       if(tempCatA[data[1]]) {
         if(tempA[tempCatA[data[1]]]) {
@@ -81,10 +76,7 @@ class CSVRead extends Component {
 
     for (let i=1; i < barcodesB.length ; i++) {
       let data= barcodesB[i].data;      
-      codeAndSKU_B.push({
-        "code": data[2],
-        "sku": data[1]
-      })
+      codeAndSKU_B.push(Code_SKU_Pair(barcodesB[i].data));
 
       if(tempCatB[data[1]]) {
         if(tempB[tempCatB[data[1]]]) {
@@ -95,16 +87,11 @@ class CSVRead extends Component {
         }
       }
     }
-    // console.log(tempCatB);
-    // }
-    // else {
-    //   console.log("barcode files not selected, hence there hould be error");
-    // }
+    console.log(codeAndSKU_A);
+    console.log(codeAndSKU_B);
 
     let sortedTempA= Object.keys(tempA).sort().reduce((r,k)=> (r[k] = tempA[k], r), {});
     let sortedTempB= Object.keys(tempB).sort().reduce((r,k)=> (r[k] = tempB[k], r), {});
-
-    let allBarcodesAString='', allBarcodesBString='', allBarcodesAArr=[], allBarcodesBArr=[];
 
     for(let i=0;i<Object.values(sortedTempA).length;i++) {
       allBarcodesAString = allBarcodesAString + Object.values(sortedTempA)[i] + ',';
@@ -147,17 +134,8 @@ class CSVRead extends Component {
       }
     }
 
-    let sourceA = resultArr.filter(e=>e.Source==='A');
-    let namesA=sourceA.map(elm=>{
-      elm.Description=tempCatA[elm.SKU]
-      return elm
-    })
-
-    let sourceB = resultArr.filter(e=>e.Source==='B');
-    let namesB=sourceB.map(elm=>{
-      elm.Description=tempCatB[elm.SKU]
-      return elm
-    })
+    let namesA=Add_Description(resultArr, 'A', tempCatA);
+    let namesB=Add_Description(resultArr, 'B', tempCatB);
 
     let final = [...namesA, ...namesB]
     final.forEach(elm=>delete elm.barcode);
