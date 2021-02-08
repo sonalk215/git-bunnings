@@ -97,35 +97,3 @@ export const ConvertToCSV= objArray =>{
     }
     return str;
 }
-
-export const Create_Output=(barcodesA, barcodesB, codeAndSKU_A, codeAndSKU_B, tempA, tempB, tempCatA, tempCatB)=>{
-
-    for (let i=1; i < barcodesA.length ; i++) {
-        let data = barcodesA[i].data;
-        codeAndSKU_A.push(Code_SKU_Pair(barcodesA[i].data));
-
-        if(tempCatA[data[1]]) {
-          if(tempA[tempCatA[data[1]]]) {
-            tempA[tempCatA[data[1]]] = tempA[tempCatA[data[1]]] + "," + data[2]
-          }
-          else {
-            tempA[tempCatA[data[1]]] = data[2]
-          }
-        }
-      }
-
-      for (let i=1; i < barcodesB.length ; i++) {
-        let data= barcodesB[i].data;      
-        codeAndSKU_B.push(Code_SKU_Pair(barcodesB[i].data));
-
-        if(tempCatB[data[1]]) {
-          if(tempB[tempCatB[data[1]]]) {
-            tempB[tempCatB[data[1]]] = tempB[tempCatB[data[1]]] + "," + data[2]
-          }
-          else {
-            tempB[tempCatB[data[1]]] = data[2]
-          }
-        }
-      }
-
-}
