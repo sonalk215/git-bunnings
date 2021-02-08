@@ -1,3 +1,10 @@
+/* CSVRead.js
+Read files
+Author(s):
+    Sonal Khare
+Date Created:
+    February 07th, 2021
+*/
 import React, {Component} from 'react';
 import CSVFile from '../components/CSVFile/CSVFile';
 // import {CSVDownload, CSVLink} from 'react-csv';
@@ -14,10 +21,11 @@ class CSVRead extends Component {
     suppliersB: [],
     barcodesA: [],
     barcodesB: [],
-    error: 0,
+    // error: 0,
     csvData: []
   }
 
+  // GET FILES DATA AND SAVE INTO RESPECTIVE STATE
   fileHandler=(file, data)=>{
     if(file.name==='catalogA.csv') {
       this.setState({catalogA: data})
@@ -88,11 +96,13 @@ class CSVRead extends Component {
         allBarcodesBString = allBarcodesBString + Object.values(sortedTempB)[i] + ',';
       }
 
+      //CREATE ARRAYS FOR A and B FOR ALL BARCODES
       allBarcodesAArr=allBarcodesAString.split(',');
       allBarcodesBArr=allBarcodesBString.split(',');
       allBarcodesAArr.pop();
       allBarcodesBArr.pop();
 
+      //PUSH ALL BARCODES FOR A INTO AN ARRAY
       for(let i=0; i<allBarcodesAArr.length ; i++) {
         let sku=codeAndSKU_A.find(x=>x.code===allBarcodesAArr[i]).sku;
         tempArr.push({
@@ -103,6 +113,7 @@ class CSVRead extends Component {
         })
       }
 
+      //SELECT BARCODES FROM B WHICH ARE NOT PRESENT IN A
       for(let i=0; i<allBarcodesBArr.length ; i++) {
         if(allBarcodesAArr.indexOf(allBarcodesBArr[i])===-1) {
           let sku=codeAndSKU_B.find(x=>x.code===allBarcodesBArr[i]).sku;
@@ -115,6 +126,7 @@ class CSVRead extends Component {
         }
       }
       
+      //CREATE ARRAY TO HAVE ONLY ONE SKU PER BARCODE AND PRODUCT
       for (let i=0 ; i<tempArr.length; i++) {
         let obj=resultArr.find(o=>o.SKU===tempArr[i].SKU);
         if(!obj) {
@@ -122,6 +134,7 @@ class CSVRead extends Component {
         }
       }
 
+      //ADD PRODUCT NAMES TO THE RESULT
       let namesA=Add_Description(resultArr, 'A', tempCatA);
       let namesB=Add_Description(resultArr, 'B', tempCatB);
 
@@ -134,6 +147,7 @@ class CSVRead extends Component {
       let csv = this.convertToCSV(final);
       let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 
+      //GENERATE OUTPUT FOR CSV AND ALSO AUTO DOWNLOAD IT
       if ( window.webkitURL ) {
         let link = document.createElement("a");
         if (link.download !== undefined) {
