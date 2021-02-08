@@ -166,13 +166,13 @@ class CSVRead extends Component {
     }
   }
 
-  //
+  //CONVERT THE DATA TO CSV
   convertToCSV= objArray=>{
     let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     let str = '';
     for (let i = 0; i < array.length; i++) {
       let line = '';
-      for (var index in array[i]) {
+      for (let index in array[i]) {
         if (line != '') line += ','
         line += array[i][index];
       }
@@ -183,6 +183,13 @@ class CSVRead extends Component {
 
 
   render() {
+    /*
+      React component to read selected files data and generate CSV output file
+      Args:
+          props: NA
+      Returns:
+          uses CSVFile component and button to generate output csv file
+    */
     return (
       <div className={classes['div_files']}>
         <CSVFile fileHandler={this.fileHandler} />

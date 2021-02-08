@@ -1,3 +1,10 @@
+/* CSVFile.js
+Read files
+Author(s):
+    Sonal Khare
+Date Created:
+    February 07th, 2021
+*/
 import React, {Component} from 'react';
 import {CSVReader} from 'react-papaparse';
 import classes from './CSVFile.module.css';
@@ -34,6 +41,13 @@ class CSVFile extends Component {
     }
 
     render () {
+        /*
+        React component to enable user to select files
+        Args:
+            props: fileHandler function to transfer file data to parent
+        Returns:
+            CSVReader component with button to browse and remove files and display file selected
+        */
         return (
             <CSVReader
                 ref={this.buttonRef}
