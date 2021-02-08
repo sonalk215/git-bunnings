@@ -33,9 +33,6 @@ FROM TERMINAL
 
 I created input csv files and placed them in input folder. For running the application, select the csv files from the folder, and then click on Generate Output button, which will create and download a csv file with the merged catalog of products from sources A and B.
 
-## **Assumptions**
-* 
-* 
 
 ## **User Interface**
 ### **On startup, the landing page is displayed from where we select files to be read and create output file**
