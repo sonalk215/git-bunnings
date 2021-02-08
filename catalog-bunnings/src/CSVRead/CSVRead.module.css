@@ -6,15 +6,17 @@
 } */
 
 .div_files {
-    
-        position: relative;
-        margin: auto;
-        overflow-y: true;
-        width: 50%;
-        /* height: 350px; */
-        background: #F5F5F5;
-        box-shadow: 5px 5px 15px rgba(#BA7E7E, .5);
-        border-radius: 10px;
-        margin-top: 5%;
-      
+    position: relative;
+    margin: auto;
+    overflow-y: true;
+    width: 50%;
+    /* height: 350px; */
+    background: #F5F5F5;
+    box-shadow: 5px 5px 15px rgba(#BA7E7E, .5);
+    border-radius: 10px;
+    margin-top: 5%;
+}
+
+.csvLink {
+    display: block;
 }

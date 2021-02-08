@@ -1,7 +1,8 @@
 .Header__header {
     padding: 5px 20px;
     color: white;
-    background-color: #e23e3e;
+    /* background-color: #e23e3e; */
+    background-color:  #00664d;
 }
   
 .Header_h1, .Header_p {
