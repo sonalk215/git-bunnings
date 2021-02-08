@@ -1,13 +1,12 @@
 /* CSVRead.js
 Read files
 Author(s):
-    Sonal Khare
+  Sonal Khare
 Date Created:
-    February 07th, 2021
+  February 07th, 2021
 */
 import React, {Component} from 'react';
 import CSVFile from '../components/CSVFile/CSVFile';
-// import {CSVDownload, CSVLink} from 'react-csv';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {SKU_Description_Pair, Code_SKU_Pair, Add_Description, ToastrMessage, ConvertToCSV, CreateBarcodesArray, Create_Final_CSV_File} from '../helperFunctions';
@@ -21,7 +20,6 @@ class CSVRead extends Component {
     suppliersB: [],
     barcodesA: [],
     barcodesB: [],
-    // error: 0,
     csvData: []
   }
 
