@@ -1,5 +1,5 @@
 # Bunnings Challenge
-Create a catalog with merged products
+Create a catalog with merged products using React
 
 ## **Purpose**
 
