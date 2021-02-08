@@ -10,7 +10,8 @@ Create a catalog with merged products
 
 
 ## **Dependencies Needed**
-* react-papaparse  (Fastest in-browser CSV (or delimited text) parser for React)
+* react-papaparse (Fastest in-browser CSV (or delimited text) parser for React)
+* react-toastify (add notifications to your app with ease)
 * Jest (Inbuilt with create-react-app)
 * Enzyme (Testing react component's output)
 
