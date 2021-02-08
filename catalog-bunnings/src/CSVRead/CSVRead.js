@@ -10,7 +10,7 @@ import CSVFile from '../components/CSVFile/CSVFile';
 // import {CSVDownload, CSVLink} from 'react-csv';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import {SKU_Description_Pair, Code_SKU_Pair, Add_Description, ToastrMessage} from '../helperFunctions';
+import {SKU_Description_Pair, Code_SKU_Pair, Add_Description, ToastrMessage, ConvertToCSV} from '../helperFunctions';
 import classes from './CSVRead.module.css';
 
 class CSVRead extends Component {
@@ -142,9 +142,9 @@ class CSVRead extends Component {
       final.forEach(elm=>delete elm.barcode);
       let headers={"SKU": "SKU", "Description": "Description", "Source": "Source"};
 
-      final.unshift(headers)
-      let jsonObject = JSON.stringify(final);
-      let csv = this.convertToCSV(final);
+      //PUSH HEADER FIELDS INTO RESULT ARRAY
+      final.unshift(headers);
+      let csv = ConvertToCSV(final);
       let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 
       //GENERATE OUTPUT FOR CSV AND ALSO AUTO DOWNLOAD IT
@@ -165,22 +165,6 @@ class CSVRead extends Component {
       ToastrMessage('Please select catalogA, catalogB, barcodeA and barcodeB files to proceed', "error");
     }
   }
-
-  //CONVERT THE DATA TO CSV
-  convertToCSV= objArray=>{
-    let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-    let str = '';
-    for (let i = 0; i < array.length; i++) {
-      let line = '';
-      for (let index in array[i]) {
-        if (line != '') line += ','
-        line += array[i][index];
-      }
-      str += line + '\r\n';
-    }
-    return str;
-  }
-
 
   render() {
     /*
