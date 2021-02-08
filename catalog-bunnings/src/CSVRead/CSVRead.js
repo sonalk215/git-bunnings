@@ -10,7 +10,7 @@ import CSVFile from '../components/CSVFile/CSVFile';
 // import {CSVDownload, CSVLink} from 'react-csv';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import {SKU_Description_Pair, Code_SKU_Pair, Add_Description, ToastrMessage, ConvertToCSV} from '../helperFunctions';
+import {SKU_Description_Pair, Code_SKU_Pair, Add_Description, ToastrMessage, ConvertToCSV, CreateBarcodesArray} from '../helperFunctions';
 import classes from './CSVRead.module.css';
 
 class CSVRead extends Component {
@@ -50,7 +50,7 @@ class CSVRead extends Component {
   generateOutput=()=>{
     let {barcodesA, barcodesB, catalogA, catalogB} = this.state;
     let resultArr=[];
-    let allBarcodesAString='', allBarcodesBString='', allBarcodesAArr=[], allBarcodesBArr=[];
+    // let allBarcodesAString='', allBarcodesBString='', allBarcodesAArr=[], allBarcodesBArr=[];
     let tempA={}, tempB={}, tempArr=[];
     let codeAndSKU_A=[], codeAndSKU_B=[];
 
@@ -85,22 +85,9 @@ class CSVRead extends Component {
           }
         }
       }
-      
-      let sortedTempA= Object.keys(tempA).sort().reduce((r,k)=> (r[k] = tempA[k], r), {});
-      let sortedTempB= Object.keys(tempB).sort().reduce((r,k)=> (r[k] = tempB[k], r), {});
 
-      for(let i=0;i<Object.values(sortedTempA).length;i++) {
-        allBarcodesAString = allBarcodesAString + Object.values(sortedTempA)[i] + ',';
-      }
-      for(let i=0;i<Object.values(sortedTempB).length;i++) {
-        allBarcodesBString = allBarcodesBString + Object.values(sortedTempB)[i] + ',';
-      }
-
-      //CREATE ARRAYS FOR A and B FOR ALL BARCODES
-      allBarcodesAArr=allBarcodesAString.split(',');
-      allBarcodesBArr=allBarcodesBString.split(',');
-      allBarcodesAArr.pop();
-      allBarcodesBArr.pop();
+      let allBarcodesAArr=CreateBarcodesArray(tempA);
+      let allBarcodesBArr = CreateBarcodesArray(tempB);
 
       //PUSH ALL BARCODES FOR A INTO AN ARRAY
       for(let i=0; i<allBarcodesAArr.length ; i++) {
