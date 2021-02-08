@@ -33,23 +33,8 @@ FROM TERMINAL
 
 I created input csv files and placed them in input folder. For running the application, select the csv files from the folder, and then click on Generate Output button, which will create and download a csv file with the merged catalog of products from sources A and B.
 
-## **Assumptions**
-* 
-* 
 
 ## **User Interface**
-### **On startup, the landing page is displayed with all movies streaming in Cinemaworld & Filmworld**
+### **On startup, the landing page is displayed from where we select files to be read and create output file**
  
-<img src="prince-theatre/public/design/LandingPage.jpeg" />
-
-### **On click of movie, below page displays movie title, poster and prices from each movie provider**
-
-<img src="prince-theatre/public/design/MovieDetailPage.jpeg" />
-
-### **On network error, we see the below screen**
-
-<img src="prince-theatre/public/design/NetworkError.jpeg" />
-
-### **On navigating to an unknown page, we go to page not found screen**
-
-<img src="prince-theatre/public/design/PageNotFound.jpeg" />
+<img src="catalog-bunnings/src/imgs/bunningsApp.png" />
