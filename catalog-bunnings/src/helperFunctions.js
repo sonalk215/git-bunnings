@@ -57,6 +57,31 @@ export const ToastrMessage=(msg, state)=>{
     }
 }
 
+export const Create_Final_CSV_File=(namesA, namesB)=>{
+    let final = [...namesA, ...namesB]
+    let headers={"SKU": "SKU", "Description": "Description", "Source": "Source"};
+    final.forEach(elm=>delete elm.barcode);
+
+      //PUSH HEADER FIELDS INTO RESULT ARRAY
+      final.unshift(headers);
+      let csv = ConvertToCSV(final);
+      let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+      //GENERATE OUTPUT FOR CSV AND ALSO AUTO DOWNLOAD IT
+      if ( window.webkitURL ) {
+        let link = document.createElement("a");
+        if (link.download !== undefined) {
+          let url = URL.createObjectURL(blob);
+          link.setAttribute("href", url);
+          link.setAttribute("download", 'result_output.csv');
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }
+}
+
 
 //CONVERT ARRAY TO CSV
 export const ConvertToCSV= objArray =>{

@@ -10,7 +10,7 @@ import CSVFile from '../components/CSVFile/CSVFile';
 // import {CSVDownload, CSVLink} from 'react-csv';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import {SKU_Description_Pair, Code_SKU_Pair, Add_Description, ToastrMessage, ConvertToCSV, CreateBarcodesArray} from '../helperFunctions';
+import {SKU_Description_Pair, Code_SKU_Pair, Add_Description, ToastrMessage, ConvertToCSV, CreateBarcodesArray, Create_Final_CSV_File} from '../helperFunctions';
 import classes from './CSVRead.module.css';
 
 class CSVRead extends Component {
@@ -50,7 +50,6 @@ class CSVRead extends Component {
   generateOutput=()=>{
     let {barcodesA, barcodesB, catalogA, catalogB} = this.state;
     let resultArr=[];
-    // let allBarcodesAString='', allBarcodesBString='', allBarcodesAArr=[], allBarcodesBArr=[];
     let tempA={}, tempB={}, tempArr=[];
     let codeAndSKU_A=[], codeAndSKU_B=[];
 
@@ -124,29 +123,7 @@ class CSVRead extends Component {
       //ADD PRODUCT NAMES TO THE RESULT
       let namesA=Add_Description(resultArr, 'A', tempCatA);
       let namesB=Add_Description(resultArr, 'B', tempCatB);
-
-      let final = [...namesA, ...namesB]
-      final.forEach(elm=>delete elm.barcode);
-      let headers={"SKU": "SKU", "Description": "Description", "Source": "Source"};
-
-      //PUSH HEADER FIELDS INTO RESULT ARRAY
-      final.unshift(headers);
-      let csv = ConvertToCSV(final);
-      let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-
-      //GENERATE OUTPUT FOR CSV AND ALSO AUTO DOWNLOAD IT
-      if ( window.webkitURL ) {
-        let link = document.createElement("a");
-        if (link.download !== undefined) {
-          let url = URL.createObjectURL(blob);
-          link.setAttribute("href", url);
-          link.setAttribute("download", 'result_output.csv');
-          link.style.visibility = 'hidden';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
-      }
+      Create_Final_CSV_File(namesA, namesB);
     }
     else {
       ToastrMessage('Please select catalogA, catalogB, barcodeA and barcodeB files to proceed', "error");
