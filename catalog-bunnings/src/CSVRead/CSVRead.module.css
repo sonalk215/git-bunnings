@@ -17,6 +17,20 @@
     margin-top: 5%;
 }
 
-.csvLink {
-    display: block;
+.btn-generate {
+    color: #494949 !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #ffffff;
+    padding: 5px;
+    border: 1px solid #494949 !important;
+    display: inline-block;
+    transition: all 0.4s ease 0s;
+}
+
+.btn-generate:hover {
+    color: #ffffff !important;
+    background: #00664d;
+    border-color: #00664d !important;
+    transition: all 0.4s ease 0s;
 }

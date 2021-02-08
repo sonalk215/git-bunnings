@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const SKU_Description_Pair=catalog=>{
     let tempCatalog={};
     for(let i=1; i < catalog.length ;i++) {
@@ -13,16 +15,35 @@ export const Code_SKU_Pair = data=>({
 })
 
 export const Add_Description=(arr, cond, tempCatalog)=>{
-    // let sourceA = resultArr.filter(e=>e.Source==='A');
-    // let namesA=sourceA.map(elm=>{
-    //   elm.Description=tempCatA[elm.SKU]
-    //   return elm
-    // })
-
     let filtered = arr.filter(e=>e.Source===cond);
     let addNamesArr=filtered.map(elm=>{
       elm.Description=tempCatalog[elm.SKU]
       return elm
     })
     return addNamesArr
+}
+
+export const ToastrMessage=(msg, state)=>{
+    if(state==='error') {
+        return toast.error(msg, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+          })
+    }
+    // else if(state==='succes') {
+    //     return toast.success(msg, {
+    //         position: "top-right",
+    //         autoClose: 5000,
+    //         hideProgressBar: false,
+    //         closeOnClick: true,
+    //         pauseOnHover: true,
+    //         draggable: false,
+    //         progress: undefined,
+    //       })
+    // }
 }

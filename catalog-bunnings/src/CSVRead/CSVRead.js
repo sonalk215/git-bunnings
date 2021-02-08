@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import CSVFile from '../components/CSVFile/CSVFile';
-import {CSVDownload, CSVLink} from 'react-csv';
+// import {CSVDownload, CSVLink} from 'react-csv';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import {SKU_Description_Pair, Code_SKU_Pair, Add_Description} from '../helperFunctions';
+import {SKU_Description_Pair, Code_SKU_Pair, Add_Description, ToastrMessage} from '../helperFunctions';
 import classes from './CSVRead.module.css';
 
 class CSVRead extends Component {
@@ -148,15 +148,7 @@ class CSVRead extends Component {
       }
     }
     else {
-      toast.error('Please select catalogA, catalogB, barcodeA and barcodeB files to proceed', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-      })
+      ToastrMessage('Please select catalogA, catalogB, barcodeA and barcodeB files to proceed', "error");
     }
   }
 
@@ -184,7 +176,7 @@ class CSVRead extends Component {
         <CSVFile fileHandler={this.fileHandler} />
         <CSVFile fileHandler={this.fileHandler} />
         <CSVFile fileHandler={this.fileHandler} />
-        <button onClick={this.generateOutput}>Generate Output</button>
+        <button onClick={this.generateOutput} className={classes['btn-generate']}>Generate Output</button>
 
         <ToastContainer
           position="top-right"
